@@ -1,0 +1,181 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.cover {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0f;
+}
+
+.cover-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(255, 100, 50, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 50%, rgba(50, 100, 255, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 0%, rgba(255, 200, 50, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.cover-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  animation: fadeIn 1.2s ease-out;
+}
+
+.cover-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 32px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.icon-sword {
+  font-size: 96px;
+  line-height: 1;
+  filter: drop-shadow(0 0 20px rgba(255, 100, 50, 0.4));
+  animation: iconSword 2s ease-in-out infinite alternate;
+}
+
+.icon-shield {
+  font-size: 96px;
+  line-height: 1;
+  filter: drop-shadow(0 0 20px rgba(50, 100, 255, 0.4));
+  animation: iconShield 2s ease-in-out infinite alternate;
+}
+
+.icon-dog {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 12px;
+  border: 2px solid rgba(255, 200, 50, 0.3);
+  box-shadow:
+    0 0 20px rgba(255, 200, 50, 0.15),
+    inset 0 0 10px rgba(255, 200, 50, 0.05);
+  animation: dogBounce 2s ease-in-out infinite;
+  transition: transform 0.3s ease;
+}
+
+.icon-dog:hover {
+  transform: scale(1.15);
+  border-color: rgba(255, 200, 50, 0.6);
+  box-shadow: 0 0 30px rgba(255, 200, 50, 0.3);
+}
+
+.cover-title {
+  font-size: clamp(36px, 8vw, 80px);
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  background: linear-gradient(135deg, #f7971e 0%, #ffd200 50%, #f7971e 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s ease-in-out infinite;
+  text-shadow: 0 0 60px rgba(255, 200, 50, 0.2);
+  margin-bottom: 12px;
+}
+
+.cover-subtitle {
+  font-size: clamp(14px, 2vw, 20px);
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  font-weight: 300;
+}
+
+.cover-btn {
+  display: inline-block;
+  padding: 16px 64px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(255, 100, 50, 0.2), rgba(50, 100, 255, 0.2));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+  position: relative;
+  overflow: hidden;
+}
+
+.cover-btn::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #f7971e, #ff6b35, #4a90d9, #f7971e);
+  background-size: 300% 300%;
+  z-index: -1;
+  animation: borderGlow 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cover-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(255, 200, 50, 0.2);
+  border-color: rgba(255, 200, 50, 0.4);
+}
+
+.cover-btn:hover::before {
+  opacity: 1;
+}
+
+.cover-btn:active {
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+@keyframes iconSword {
+  0%   { transform: translateX(-8px) rotate(-5deg); }
+  100% { transform: translateX(-4px) rotate(5deg); }
+}
+
+@keyframes iconShield {
+  0%   { transform: translateX(8px) rotate(5deg); }
+  100% { transform: translateX(4px) rotate(-5deg); }
+}
+
+@keyframes dogBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  25%      { transform: translateY(-6px) scale(1.02); }
+  50%      { transform: translateY(0) scale(1); }
+  75%      { transform: translateY(-3px) scale(1.01); }
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+@keyframes borderGlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
