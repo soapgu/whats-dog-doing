@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import './Quiz.css';
 
-function generateQuestions(count) {
+function generateQuestions(count, difficulty) {
   const questions = [];
   for (let i = 0; i < count; i++) {
     const isAdd = Math.random() > 0.5;
@@ -17,19 +17,32 @@ function generateQuestions(count) {
         answer = a - b;
       }
     } while (answer === 0);
-    questions.push({ a, b, op: isAdd ? '+' : '-', answer });
+    let blankPos = 'answer';
+    let blankValue = answer;
+    if (difficulty === 'hard') {
+      const rand = Math.random();
+      if (rand < 1 / 3) {
+        blankPos = 'a';
+        blankValue = a;
+      } else if (rand < 2 / 3) {
+        blankPos = 'b';
+        blankValue = b;
+      }
+    }
+    questions.push({ a, b, op: isAdd ? '+' : '-', answer, blankPos, blankValue });
   }
   return questions;
 }
 
-function Quiz({ onComplete }) {
-  const [questions] = useState(() => generateQuestions(10));
+function Quiz({ difficulty, onComplete }) {
+  const timerSeconds = difficulty === 'hard' ? 12 : 15;
+  const [questions] = useState(() => generateQuestions(10, difficulty));
   const [index, setIndex] = useState(0);
   const [input, setInput] = useState('');
   const [feedback, setFeedback] = useState(null);
   const [score, setScore] = useState(0);
   const [results, setResults] = useState(Array(10).fill(null));
-  const [timeLeft, setTimeLeft] = useState(15);
+  const [timeLeft, setTimeLeft] = useState(timerSeconds);
   const submittedRef = useRef(false);
   const inputRef = useRef(null);
 
@@ -80,7 +93,7 @@ function Quiz({ onComplete }) {
       submittedRef.current = false;
       setFeedback(null);
       setInput('');
-      setTimeLeft(15);
+      setTimeLeft(timerSeconds);
       if (index < questions.length - 1) {
         setIndex((i) => i + 1);
       } else {
@@ -92,7 +105,7 @@ function Quiz({ onComplete }) {
   const handleSubmit = () => {
     const val = parseInt(input, 10);
     if (isNaN(val) || submittedRef.current) return;
-    finishQuestion(val === q.answer);
+    finishQuestion(val === q.blankValue);
   };
 
   const handleKeyDown = (e) => {
@@ -115,11 +128,23 @@ function Quiz({ onComplete }) {
         </div>
 
         <div className="quiz-question">
-          <span className="quiz-num">{q.a}</span>
+          {q.blankPos === 'a' ? (
+            <span className="quiz-answer-box">?</span>
+          ) : (
+            <span className="quiz-num">{q.a}</span>
+          )}
           <span className="quiz-op">{q.op}</span>
-          <span className="quiz-num">{q.b}</span>
+          {q.blankPos === 'b' ? (
+            <span className="quiz-answer-box">?</span>
+          ) : (
+            <span className="quiz-num">{q.b}</span>
+          )}
           <span className="quiz-eq">=</span>
-          <span className="quiz-answer-box">?</span>
+          {q.blankPos === 'answer' ? (
+            <span className="quiz-answer-box">?</span>
+          ) : (
+            <span className="quiz-num">{q.answer}</span>
+          )}
         </div>
 
         <div className="quiz-timer">
@@ -157,7 +182,7 @@ function Quiz({ onComplete }) {
               className="quiz-feedback-img"
             />
             <div className={`quiz-feedback ${feedback}`}>
-              {feedback === 'correct' ? '✓ 正确！' : `✗ 错误！正确答案是 ${q.answer}`}
+              {feedback === 'correct' ? '✓ 正确！' : `✗ 错误！正确答案是 ${q.blankValue}`}
             </div>
           </div>
         )}

@@ -8,10 +8,16 @@ function CoverPage({ onStart }) {
     window.speechSynthesis.speak(utterance);
   };
 
-  const handleStart = (e) => {
+  const handleEasy = (e) => {
     e.stopPropagation();
-    playSound('开始挑战');
-    onStart();
+    playSound('简单模式');
+    onStart('easy');
+  };
+
+  const handleHard = (e) => {
+    e.stopPropagation();
+    playSound('困难模式');
+    onStart('hard');
   };
 
   return (
@@ -29,9 +35,14 @@ function CoverPage({ onStart }) {
         </div>
         <h1 className="cover-title">WHATS DOG DOING</h1>
         <p className="cover-subtitle">A New Adventure Awaits</p>
-        <button className="cover-btn" onClick={handleStart}>
-          开 始
-        </button>
+        <div className="cover-btn-row">
+          <button className="cover-btn easy" onClick={handleEasy}>
+            简 单
+          </button>
+          <button className="cover-btn hard" onClick={handleHard}>
+            困 难
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -2,11 +2,16 @@ import { useState } from 'react';
 import CoverPage from './CoverPage';
 import Quiz from './Quiz';
 
+const MODE_LABEL = { easy: '简单', hard: '困难' };
+const MODE_EMOJI = { easy: '🌱', hard: '🔥' };
+
 function App() {
   const [page, setPage] = useState('cover');
   const [result, setResult] = useState(null);
+  const [difficulty, setDifficulty] = useState('easy');
 
-  const handleStart = () => {
+  const handleStart = (difficulty) => {
+    setDifficulty(difficulty);
     setPage('quiz');
   };
 
@@ -25,7 +30,7 @@ function App() {
   }
 
   if (page === 'quiz') {
-    return <Quiz onComplete={handleComplete} />;
+    return <Quiz difficulty={difficulty} onComplete={handleComplete} />;
   }
 
   return (
@@ -35,6 +40,9 @@ function App() {
         <div className="cover-icon" style={{ fontSize: 72, marginBottom: 24 }}>
           {result.score >= 8 ? '🎉' : result.score >= 5 ? '👍' : '💪'}
         </div>
+        <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 14, marginBottom: 24 }}>
+          {MODE_EMOJI[difficulty]} {MODE_LABEL[difficulty]}模式
+        </p>
         <h1 className="cover-title" style={{ fontSize: 'clamp(28px, 5vw, 48px)', marginBottom: 16 }}>
           答题结束！
         </h1>

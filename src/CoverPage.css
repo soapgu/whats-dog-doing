@@ -98,9 +98,15 @@
   font-weight: 300;
 }
 
+.cover-btn-row {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
 .cover-btn {
   display: inline-block;
-  padding: 16px 64px;
+  padding: 16px 48px;
   font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -140,6 +146,32 @@
 
 .cover-btn:active {
   transform: translateY(0);
+}
+
+.cover-btn.easy {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(50, 100, 255, 0.2));
+}
+
+.cover-btn.easy::before {
+  background: linear-gradient(135deg, #4ade80, #22c55e, #4a90d9, #4ade80);
+}
+
+.cover-btn.easy:hover {
+  box-shadow: 0 0 30px rgba(74, 222, 128, 0.2);
+  border-color: rgba(74, 222, 128, 0.4);
+}
+
+.cover-btn.hard {
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.2), rgba(50, 100, 255, 0.2));
+}
+
+.cover-btn.hard::before {
+  background: linear-gradient(135deg, #f87171, #ef4444, #4a90d9, #f87171);
+}
+
+.cover-btn.hard:hover {
+  box-shadow: 0 0 30px rgba(248, 113, 113, 0.2);
+  border-color: rgba(248, 113, 113, 0.4);
 }
 
 @keyframes fadeIn {
