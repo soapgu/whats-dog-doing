@@ -14,6 +14,12 @@ function CoverPage({ onStart }) {
     onStart('easy');
   };
 
+  const handleNormal = (e) => {
+    e.stopPropagation();
+    playSound('普通模式');
+    onStart('normal');
+  };
+
   const handleHard = (e) => {
     e.stopPropagation();
     playSound('困难模式');
@@ -38,6 +44,9 @@ function CoverPage({ onStart }) {
         <div className="cover-btn-row">
           <button className="cover-btn easy" onClick={handleEasy}>
             简 单
+          </button>
+          <button className="cover-btn normal" onClick={handleNormal}>
+            普 通
           </button>
           <button className="cover-btn hard" onClick={handleHard}>
             困 难

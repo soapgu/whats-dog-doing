@@ -18,9 +18,16 @@
   pointer-events: none;
 }
 
-.quiz-content {
+.quiz-layout {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quiz-content {
+  position: relative;
   text-align: center;
   animation: fadeIn 0.5s ease-out;
 }
@@ -207,8 +214,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  height: 180px;
+  height: 36px;
   transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
 }
 
@@ -216,15 +222,6 @@
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
-}
-
-.quiz-feedback-img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 20px rgba(255, 200, 50, 0.1);
 }
 
 .quiz-feedback {
@@ -242,6 +239,77 @@
   color: #f87171;
 }
 
+.battle-arena {
+  position: relative;
+  width: 400px;
+  height: 100px;
+  margin-bottom: 16px;
+}
+
+.battle-hero {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.hero-emoji {
+  font-size: 52px;
+  display: inline-block;
+}
+
+.hero-emoji.fall {
+  animation: heroFall 0.8s forwards;
+}
+
+.hero-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 20%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 200, 50, 0.3);
+  box-shadow: 0 0 12px rgba(255, 200, 50, 0.15);
+}
+
+.battle-track {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.monster-emoji {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 56px;
+  z-index: 2;
+  will-change: left;
+}
+
+.monster-emoji.hit {
+  animation: monsterHit 0.6s forwards;
+}
+
+.monster-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 20%;
+  object-fit: cover;
+  display: block;
+}
+
+.hit-effect {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 72px;
+  z-index: 3;
+  pointer-events: none;
+  animation: hitBurst 0.6s forwards;
+}
+
 @keyframes cellPulse {
   0%, 100% { box-shadow: 0 0 12px rgba(255, 200, 50, 0.15); }
   50%      { box-shadow: 0 0 20px rgba(255, 200, 50, 0.3); }
@@ -256,4 +324,22 @@
   0%, 100% { transform: rotate(0deg); }
   25%      { transform: rotate(-10deg); }
   75%      { transform: rotate(10deg); }
+}
+
+@keyframes heroFall {
+  0% { transform: translateY(-50%); opacity: 1; }
+  50% { transform: translateY(10px) rotate(15deg); opacity: 0.5; }
+  100% { transform: translateY(40px) rotate(45deg); opacity: 0; }
+}
+
+@keyframes monsterHit {
+  0% { transform: translateY(-50%) scale(1); opacity: 1; }
+  40% { transform: translateY(-50%) scale(1.6); opacity: 0.8; }
+  100% { transform: translateY(-50%) scale(0); opacity: 0; }
+}
+
+@keyframes hitBurst {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  40% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
 }

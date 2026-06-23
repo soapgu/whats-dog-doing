@@ -34,8 +34,14 @@ function generateQuestions(count, difficulty) {
   return questions;
 }
 
+const MONSTER_IMG = {
+  easy: '/images/monster.jpg',
+  normal: '/images/monster-normal.png',
+  hard: '/images/monster-hard.png',
+};
+
 function Quiz({ difficulty, onComplete }) {
-  const timerSeconds = difficulty === 'hard' ? 12 : 15;
+  const timerSeconds = difficulty === 'easy' ? 30 : difficulty === 'hard' ? 12 : 15;
   const [questions] = useState(() => generateQuestions(10, difficulty));
   const [index, setIndex] = useState(0);
   const [input, setInput] = useState('');
@@ -43,6 +49,7 @@ function Quiz({ difficulty, onComplete }) {
   const [score, setScore] = useState(0);
   const [results, setResults] = useState(Array(10).fill(null));
   const [timeLeft, setTimeLeft] = useState(timerSeconds);
+  const [monsterLeft, setMonsterLeft] = useState(80);
   const submittedRef = useRef(false);
   const inputRef = useRef(null);
 
@@ -71,6 +78,22 @@ function Quiz({ difficulty, onComplete }) {
       finishQuestion(false);
     }
   }, [timeLeft]);
+
+  useEffect(() => {
+    if (feedback) return;
+    setMonsterLeft(80);
+    const startTime = Date.now();
+    const totalMs = timerSeconds * 1000;
+    let rafId;
+    const tick = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / totalMs, 1);
+      setMonsterLeft(80 - progress * 78);
+      if (progress < 1) rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [index, feedback, timerSeconds]);
 
   const finishQuestion = (correct) => {
     if (submittedRef.current) return;
@@ -115,7 +138,24 @@ function Quiz({ difficulty, onComplete }) {
   return (
     <div className="quiz">
       <div className="quiz-bg" />
-      <div className="quiz-content">
+      <div className="quiz-layout">
+        <div className="battle-arena">
+          <div className="battle-hero">
+            <span className={`hero-emoji ${feedback === 'wrong' ? 'fall' : ''}`}>
+              <img src="/images/hero.png" alt="英雄" className="hero-img" />
+            </span>
+          </div>
+          <div className="battle-track">
+            <span
+              className={`monster-emoji ${feedback === 'correct' ? 'hit' : ''}`}
+              style={{ left: `${monsterLeft}%` }}
+            >
+              <img src={MONSTER_IMG[difficulty]} alt="怪物" className="monster-img" />
+            </span>
+            {feedback === 'correct' && <span className="hit-effect">💥</span>}
+          </div>
+        </div>
+        <div className="quiz-content">
         <div className="quiz-progress">
           {results.map((r, i) => (
             <div
@@ -174,14 +214,10 @@ function Quiz({ difficulty, onComplete }) {
           </button>
         </div>
 
-        <div className={`quiz-feedback-wrap ${!feedback ? 'hidden' : ''}`}>
-          <img
-            src={feedback === 'correct' ? '/images/dog-happy.jpg' : '/images/dog-sad.jpg'}
-            alt={feedback === 'correct' ? '正确' : '错误'}
-            className="quiz-feedback-img"
-          />
-          <div className={`quiz-feedback ${feedback || ''}`}>
-            {feedback === 'correct' ? '✓ 正确！' : feedback ? `✗ 错误！正确答案是 ${q.blankValue}` : ''}
+          <div className={`quiz-feedback-wrap ${!feedback ? 'hidden' : ''}`}>
+            <div className={`quiz-feedback ${feedback || ''}`}>
+              {feedback === 'correct' ? '✓ 正确！' : feedback ? `✗ 错误！正确答案是 ${q.blankValue}` : ''}
+            </div>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
-const MODE_LABEL = { easy: '简单', hard: '困难' };
-const MODE_EMOJI = { easy: '🌱', hard: '🔥' };
+const MODE_LABEL = { easy: '简单', normal: '普通', hard: '困难' };
+const MODE_EMOJI = { easy: '🌱', normal: '⚡', hard: '🔥' };
 
 function ResultPage({ result, difficulty, onRestart }) {
   return (
