@@ -174,18 +174,16 @@ function Quiz({ difficulty, onComplete }) {
           </button>
         </div>
 
-        {feedback && (
-          <div className="quiz-feedback-wrap">
-            <img
-              src={feedback === 'correct' ? '/images/dog-happy.jpg' : '/images/dog-sad.jpg'}
-              alt={feedback === 'correct' ? '正确' : '错误'}
-              className="quiz-feedback-img"
-            />
-            <div className={`quiz-feedback ${feedback}`}>
-              {feedback === 'correct' ? '✓ 正确！' : `✗ 错误！正确答案是 ${q.blankValue}`}
-            </div>
+        <div className={`quiz-feedback-wrap ${!feedback ? 'hidden' : ''}`}>
+          <img
+            src={feedback === 'correct' ? '/images/dog-happy.jpg' : '/images/dog-sad.jpg'}
+            alt={feedback === 'correct' ? '正确' : '错误'}
+            className="quiz-feedback-img"
+          />
+          <div className={`quiz-feedback ${feedback || ''}`}>
+            {feedback === 'correct' ? '✓ 正确！' : feedback ? `✗ 错误！正确答案是 ${q.blankValue}` : ''}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

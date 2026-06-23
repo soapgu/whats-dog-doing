@@ -208,7 +208,14 @@
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  animation: fadeIn 0.3s ease-out;
+  height: 180px;
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+}
+
+.quiz-feedback-wrap.hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .quiz-feedback-img {
