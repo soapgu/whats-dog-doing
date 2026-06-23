@@ -60,6 +60,16 @@ function Quiz({ difficulty, onComplete }) {
   }, [index, feedback]);
 
   useEffect(() => {
+    const bgm = new Audio(`/sounds/${difficulty}.mp3`);
+    bgm.loop = true;
+    bgm.play().catch(() => {});
+    return () => {
+      bgm.pause();
+      bgm.currentTime = 0;
+    };
+  }, [difficulty]);
+
+  useEffect(() => {
     if (feedback) return;
     const timer = setInterval(() => {
       setTimeLeft((t) => {
@@ -102,10 +112,8 @@ function Quiz({ difficulty, onComplete }) {
     if (correct) setScore((s) => s + 1);
     setFeedback(correct ? 'correct' : 'wrong');
 
-    const sound = new SpeechSynthesisUtterance(correct ? '比比拉布' : '错误');
-    sound.lang = 'zh-CN';
-    sound.rate = 0.9;
-    window.speechSynthesis.speak(sound);
+    const sound = new Audio(correct ? '/sounds/win.mp3' : '/sounds/fail.mp3');
+    sound.play();
     setResults((prev) => {
       const next = [...prev];
       next[index] = correct;

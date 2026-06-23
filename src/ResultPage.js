@@ -1,7 +1,18 @@
+import { useEffect } from 'react';
+
 const MODE_LABEL = { easy: '简单', normal: '普通', hard: '困难' };
 const MODE_EMOJI = { easy: '🌱', normal: '⚡', hard: '🔥' };
 
 function ResultPage({ result, difficulty, onRestart }) {
+  useEffect(() => {
+    const bgm = new Audio('/sounds/clear.mp3');
+    bgm.loop = true;
+    bgm.play().catch(() => {});
+    return () => {
+      bgm.pause();
+      bgm.currentTime = 0;
+    };
+  }, []);
   return (
     <div className="cover">
       <div className="cover-bg" />

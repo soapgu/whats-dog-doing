@@ -1,11 +1,31 @@
+import { useEffect, useRef } from 'react';
 import './CoverPage.css';
 
 function CoverPage({ onStart }) {
+  const bgmRef = useRef(null);
+
+  useEffect(() => {
+    const bgm = new Audio('/sounds/cover.mp3');
+    bgm.loop = true;
+    bgmRef.current = bgm;
+    return () => {
+      bgm.pause();
+      bgm.currentTime = 0;
+    };
+  }, []);
+
   const playSound = (text) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'zh-CN';
     utterance.rate = 0.9;
     window.speechSynthesis.speak(utterance);
+  };
+
+  const handleBgClick = () => {
+    if (bgmRef.current && bgmRef.current.paused) {
+      bgmRef.current.play().catch(() => {});
+    }
+    playSound('我的刀盾');
   };
 
   const handleEasy = (e) => {
@@ -27,7 +47,7 @@ function CoverPage({ onStart }) {
   };
 
   return (
-    <div className="cover" onClick={() => playSound('我的刀盾')}>
+    <div className="cover" onClick={handleBgClick}>
       <div className="cover-bg" />
       <div className="cover-content">
         <div className="cover-icon">
