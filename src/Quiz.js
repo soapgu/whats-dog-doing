@@ -35,9 +35,9 @@ function generateQuestions(count, difficulty) {
 }
 
 const MONSTER_IMG = {
-  easy: '/images/monster.jpg',
-  normal: '/images/monster-normal.png',
-  hard: '/images/monster-hard.png',
+  easy: process.env.PUBLIC_URL + '/images/monster.jpg',
+  normal: process.env.PUBLIC_URL + '/images/monster-normal.png',
+  hard: process.env.PUBLIC_URL + '/images/monster-hard.png',
 };
 
 function Quiz({ difficulty, onComplete }) {
@@ -60,7 +60,7 @@ function Quiz({ difficulty, onComplete }) {
   }, [index, feedback]);
 
   useEffect(() => {
-    const bgm = new Audio(`/sounds/${difficulty}.mp3`);
+    const bgm = new Audio(process.env.PUBLIC_URL + `/sounds/${difficulty}.mp3`);
     bgm.loop = true;
     bgm.play().catch(() => {});
     return () => {
@@ -113,7 +113,7 @@ function Quiz({ difficulty, onComplete }) {
     if (correct) setScore((s) => s + 1);
     setFeedback(correct ? 'correct' : 'wrong');
 
-    const sound = new Audio(correct ? '/sounds/win.mp3' : '/sounds/fail.mp3');
+    const sound = new Audio(process.env.PUBLIC_URL + (correct ? '/sounds/win.mp3' : '/sounds/fail.mp3'));
     sound.play();
     setResults((prev) => {
       const next = [...prev];
@@ -171,7 +171,7 @@ function Quiz({ difficulty, onComplete }) {
             <div className="battle-arena">
               <div className="battle-hero">
                 <span className={`hero-emoji ${feedback === 'wrong' ? 'fall' : ''}`}>
-                  <img src="/images/hero.png" alt="英雄" className="hero-img" />
+                  <img src={process.env.PUBLIC_URL + '/images/hero.png'} alt="英雄" className="hero-img" />
                 </span>
               </div>
               <div className="battle-track">

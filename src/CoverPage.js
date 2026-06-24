@@ -5,7 +5,7 @@ function CoverPage({ onStart }) {
   const bgmRef = useRef(null);
 
   useEffect(() => {
-    const bgm = new Audio('/sounds/cover.mp3');
+    const bgm = new Audio(process.env.PUBLIC_URL + '/sounds/cover.mp3');
     bgm.loop = true;
     bgmRef.current = bgm;
     return () => {
@@ -53,7 +53,7 @@ function CoverPage({ onStart }) {
         <div className="cover-icon">
           <span className="icon-sword">🗡️</span>
           <img
-            src="/images/dog-hero.jpg"
+            src={process.env.PUBLIC_URL + '/images/dog-hero.jpg'}
             alt="刀盾狗"
             className="icon-dog"
           />

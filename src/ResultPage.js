@@ -5,7 +5,7 @@ const MODE_EMOJI = { easy: '🌱', normal: '⚡', hard: '🔥' };
 
 function ResultPage({ result, difficulty, onRestart }) {
   useEffect(() => {
-    const bgm = new Audio('/sounds/clear.mp3');
+    const bgm = new Audio(process.env.PUBLIC_URL + '/sounds/clear.mp3');
     bgm.loop = true;
     bgm.play().catch(() => {});
     return () => {
