@@ -87,6 +87,7 @@ function Quiz({ difficulty, onComplete }) {
     if (timeLeft === 0 && !submittedRef.current) {
       finishQuestion(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft]);
 
   useEffect(() => {
@@ -147,88 +148,90 @@ function Quiz({ difficulty, onComplete }) {
     <div className="quiz">
       <div className="quiz-bg" />
       <div className="quiz-layout">
-        <div className="battle-arena">
-          <div className="battle-hero">
-            <span className={`hero-emoji ${feedback === 'wrong' ? 'fall' : ''}`}>
-              <img src="/images/hero.png" alt="英雄" className="hero-img" />
-            </span>
-          </div>
-          <div className="battle-track">
-            <span
-              className={`monster-emoji ${feedback === 'correct' ? 'hit' : ''}`}
-              style={{ left: `${monsterLeft}%` }}
-            >
-              <img src={MONSTER_IMG[difficulty]} alt="怪物" className="monster-img" />
-            </span>
-            {feedback === 'correct' && <span className="hit-effect">💥</span>}
-          </div>
-        </div>
-        <div className="quiz-content">
-        <div className="quiz-progress">
-          {results.map((r, i) => (
-            <div
-              key={i}
-              className={`quiz-cell ${r === null ? (i === index ? 'current' : 'pending') : r ? 'correct' : 'wrong'}`}
-            >
-              {r === null ? (i === index ? '▸' : i + 1) : r ? '✓' : '✗'}
+          <div className="quiz-content">
+            <div className="quiz-top-row">
+              <div className="quiz-progress">
+                {results.map((r, i) => (
+                  <div
+                    key={i}
+                    className={`quiz-cell ${r === null ? (i === index ? 'current' : 'pending') : r ? 'correct' : 'wrong'}`}
+                  >
+                    {r === null ? (i === index ? '▸' : i + 1) : r ? '✓' : '✗'}
+                  </div>
+                ))}
+              </div>
+              <div className="quiz-timer">
+                <span className={`timer-icon ${timeLeft <= 5 ? 'urgent' : ''}`}>⏱</span>
+                <span className={`timer-text ${timeLeft <= 5 ? 'urgent' : timeLeft <= 10 ? 'warn' : ''}`}>
+                  {timeLeft}s
+                </span>
+              </div>
             </div>
-          ))}
-        </div>
 
-        <div className="quiz-question">
-          {q.blankPos === 'a' ? (
-            <span className="quiz-answer-box">?</span>
-          ) : (
-            <span className="quiz-num">{q.a}</span>
-          )}
-          <span className="quiz-op">{q.op}</span>
-          {q.blankPos === 'b' ? (
-            <span className="quiz-answer-box">?</span>
-          ) : (
-            <span className="quiz-num">{q.b}</span>
-          )}
-          <span className="quiz-eq">=</span>
-          {q.blankPos === 'answer' ? (
-            <span className="quiz-answer-box">?</span>
-          ) : (
-            <span className="quiz-num">{q.answer}</span>
-          )}
-        </div>
+            <div className="battle-arena">
+              <div className="battle-hero">
+                <span className={`hero-emoji ${feedback === 'wrong' ? 'fall' : ''}`}>
+                  <img src="/images/hero.png" alt="英雄" className="hero-img" />
+                </span>
+              </div>
+              <div className="battle-track">
+                <span
+                  className={`monster-emoji ${feedback === 'correct' ? 'hit' : ''}`}
+                  style={{ left: `${monsterLeft}%` }}
+                >
+                  <img src={MONSTER_IMG[difficulty]} alt="怪物" className="monster-img" />
+                </span>
+                {feedback === 'correct' && <span className="hit-effect">💥</span>}
+              </div>
+            </div>
 
-        <div className="quiz-timer">
-          <span className={`timer-icon ${timeLeft <= 5 ? 'urgent' : ''}`}>⏱</span>
-          <span className={`timer-text ${timeLeft <= 5 ? 'urgent' : timeLeft <= 10 ? 'warn' : ''}`}>
-            {timeLeft}s
-          </span>
-        </div>
+            <div className="quiz-question">
+              {q.blankPos === 'a' ? (
+                <span className="quiz-answer-box">?</span>
+              ) : (
+                <span className="quiz-num">{q.a}</span>
+              )}
+              <span className="quiz-op">{q.op}</span>
+              {q.blankPos === 'b' ? (
+                <span className="quiz-answer-box">?</span>
+              ) : (
+                <span className="quiz-num">{q.b}</span>
+              )}
+              <span className="quiz-eq">=</span>
+              {q.blankPos === 'answer' ? (
+                <span className="quiz-answer-box">?</span>
+              ) : (
+                <span className="quiz-num">{q.answer}</span>
+              )}
+            </div>
 
-        <div className="quiz-input-row">
-          <input
-            ref={inputRef}
-            className="quiz-input"
-            type="number"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            disabled={feedback !== null}
-            placeholder="输入答案"
-          />
-          <button
-            className="quiz-submit"
-            onClick={handleSubmit}
-            disabled={feedback !== null}
-          >
-            确 认
-          </button>
-        </div>
+            <div className="quiz-input-row">
+              <input
+                ref={inputRef}
+                className="quiz-input"
+                type="number"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                disabled={feedback !== null}
+                placeholder="输入答案"
+              />
+              <button
+                className="quiz-submit"
+                onClick={handleSubmit}
+                disabled={feedback !== null}
+              >
+                确 认
+              </button>
+            </div>
 
-          <div className={`quiz-feedback-wrap ${!feedback ? 'hidden' : ''}`}>
-            <div className={`quiz-feedback ${feedback || ''}`}>
-              {feedback === 'correct' ? '✓ 正确！' : feedback ? `✗ 错误！正确答案是 ${q.blankValue}` : ''}
+            <div className={`quiz-feedback-wrap ${!feedback ? 'hidden' : ''}`}>
+              <div className={`quiz-feedback ${feedback || ''}`}>
+                {feedback === 'correct' ? '✓ 正确！' : feedback ? `✗ 错误！正确答案是 ${q.blankValue}` : ''}
+              </div>
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }
