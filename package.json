@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "gh-pages": "^6.3.0",
+    "pptxgenjs": "^4.0.1",
     "react-app-rewired": "^2.2.1"
   }
 }

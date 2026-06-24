@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# WHATS DOG DOING 🐕
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+一款帮助儿童练习加减法的数学答题网页游戏。怪物正在靠近英雄，答对则消灭怪物，答错或超时则英雄跌落。
 
-## Available Scripts
+## 功能
 
-In the project directory, you can run:
+- **三种难度模式**：
+  - 简单：30 秒倒计时，答案填空
+  - 普通：15 秒倒计时，答案填空
+  - 困难：12 秒倒计时，随机位置填空（a / b / 答案）
+- **战斗动画**：怪物从右向左逐步靠近英雄，答对触发消灭特效，答错英雄跌落
+- **可自定义**：英雄与怪物图片、每题背景音乐均可替换
+- **语音反馈 / 音效**：答对/答错播放独立音效，不同场景有背景音乐
 
-### `npm start`
+## 技术栈
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React 19
+- Create React App + react-app-rewired
+- GitHub Pages 部署
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 本地运行
 
-### `npm test`
+```bash
+npm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 构建与部署
 
-### `npm run build`
+```bash
+npm run build
+npm run deploy
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+部署后访问：https://soapgu.github.io/whats-dog-doing
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 项目结构
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+public/
+  images/       — 英雄、怪物图片
+  sounds/       — 背景音乐、音效
+src/
+  App.js        — 根组件，页面路由
+  CoverPage.js  — 首页（难度选择）
+  Quiz.js       — 答题页（战斗动画、计时、输入）
+  ResultPage.js — 结算页
+  CoverPage.css
+  Quiz.css
+```
 
-### `npm run eject`
+## 自定义
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+替换 `public/images/` 和 `public/sounds/` 下的文件即可更换素材。路径映射见 `Quiz.js` 中的 `MONSTER_IMG` 对象和各个 `useEffect` 中的音频文件路径。
