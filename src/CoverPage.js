@@ -89,6 +89,7 @@ function CoverPage({ onStart }) {
           </button>
         </div>
       </div>
+      <p className="cover-version">v{require('../package.json').version}</p>
     </div>
   );
 }
