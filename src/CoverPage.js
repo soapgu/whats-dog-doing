@@ -15,10 +15,13 @@ function CoverPage({ onStart }) {
   }, []);
 
   const playSound = (text) => {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'zh-CN';
-    utterance.rate = 0.9;
-    window.speechSynthesis.speak(utterance);
+    if (!window.speechSynthesis) return;
+    try {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'zh-CN';
+      utterance.rate = 0.9;
+      window.speechSynthesis.speak(utterance);
+    } catch (_) {}
   };
 
   const handleBgClick = () => {
