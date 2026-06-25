@@ -152,6 +152,9 @@
   font-variant-numeric: tabular-nums;
   color: #4ade80;
   transition: color 0.3s;
+  min-width: 3ch;
+  display: inline-block;
+  text-align: left;
 }
 
 .timer-text.warn {
