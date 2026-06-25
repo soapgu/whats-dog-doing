@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/whats-dog-doing/static/css/main.6f0a94e2.css",
-    "main.js": "/whats-dog-doing/static/js/main.e6e9d2cc.js",
+    "main.css": "/whats-dog-doing/static/css/main.769270ad.css",
+    "main.js": "/whats-dog-doing/static/js/main.caa3602d.js",
     "index.html": "/whats-dog-doing/index.html",
-    "main.6f0a94e2.css.map": "/whats-dog-doing/static/css/main.6f0a94e2.css.map",
-    "main.e6e9d2cc.js.map": "/whats-dog-doing/static/js/main.e6e9d2cc.js.map"
+    "main.769270ad.css.map": "/whats-dog-doing/static/css/main.769270ad.css.map",
+    "main.caa3602d.js.map": "/whats-dog-doing/static/js/main.caa3602d.js.map"
   },
   "entrypoints": [
-    "static/css/main.6f0a94e2.css",
-    "static/js/main.e6e9d2cc.js"
+    "static/css/main.769270ad.css",
+    "static/js/main.caa3602d.js"
   ]
 }
