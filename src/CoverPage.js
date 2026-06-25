@@ -63,13 +63,16 @@ function CoverPage({ onStart }) {
         <p className="cover-subtitle">A New Adventure Awaits</p>
         <div className="cover-btn-row">
           <button className="cover-btn easy" onClick={handleEasy}>
-            简 单
+            <img src={process.env.PUBLIC_URL + '/images/monster.jpg'} alt="" className="cover-btn-img" />
+            <span>简 单</span>
           </button>
           <button className="cover-btn normal" onClick={handleNormal}>
-            普 通
+            <img src={process.env.PUBLIC_URL + '/images/monster-normal.png'} alt="" className="cover-btn-img" />
+            <span>普 通</span>
           </button>
           <button className="cover-btn hard" onClick={handleHard}>
-            困 难
+            <img src={process.env.PUBLIC_URL + '/images/monster-hard.png'} alt="" className="cover-btn-img" />
+            <span>困 难</span>
           </button>
         </div>
       </div>

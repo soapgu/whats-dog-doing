@@ -105,15 +105,18 @@
 }
 
 .cover-btn {
-  display: inline-block;
-  padding: 16px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 40px 16px;
   font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.2em;
   color: #fff;
   background: linear-gradient(135deg, rgba(255, 100, 50, 0.2), rgba(50, 100, 255, 0.2));
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 50px;
+  border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(4px);
@@ -125,7 +128,7 @@
   content: '';
   position: absolute;
   inset: -2px;
-  border-radius: 50px;
+  border-radius: 20px;
   background: linear-gradient(135deg, #f7971e, #ff6b35, #4a90d9, #f7971e);
   background-size: 300% 300%;
   z-index: -1;
@@ -159,6 +162,14 @@
 .cover-btn.easy:hover {
   box-shadow: 0 0 30px rgba(74, 222, 128, 0.2);
   border-color: rgba(74, 222, 128, 0.4);
+}
+
+.cover-btn-img {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
 }
 
 .cover-btn.normal {
