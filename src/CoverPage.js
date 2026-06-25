@@ -46,6 +46,12 @@ function CoverPage({ onStart }) {
     onStart('hard');
   };
 
+  const handleHell = (e) => {
+    e.stopPropagation();
+    playSound('地狱模式');
+    onStart('hell');
+  };
+
   return (
     <div className="cover" onClick={handleBgClick}>
       <div className="cover-bg" />
@@ -73,6 +79,10 @@ function CoverPage({ onStart }) {
           <button className="cover-btn hard" onClick={handleHard}>
             <img src={process.env.PUBLIC_URL + '/images/monster-hard.png'} alt="" className="cover-btn-img" />
             <span>困 难</span>
+          </button>
+          <button className="cover-btn hell" onClick={handleHell}>
+            <img src={process.env.PUBLIC_URL + '/images/monster-hell.png'} alt="" className="cover-btn-img" />
+            <span>地 狱</span>
           </button>
         </div>
       </div>

@@ -198,6 +198,19 @@
   border-color: rgba(248, 113, 113, 0.4);
 }
 
+.cover-btn.hell {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(50, 100, 255, 0.2));
+}
+
+.cover-btn.hell::before {
+  background: linear-gradient(135deg, #a855f7, #7c3aed, #4a90d9, #a855f7);
+}
+
+.cover-btn.hell:hover {
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }

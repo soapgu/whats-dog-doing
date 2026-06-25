@@ -4,19 +4,58 @@ import './Quiz.css';
 function generateQuestions(count, difficulty) {
   const questions = [];
   for (let i = 0; i < count; i++) {
-    const isAdd = Math.random() > 0.5;
-    let a, b, answer;
-    do {
-      if (isAdd) {
+    let a, b, c, op1, op2, answer;
+
+    if (difficulty === 'hell') {
+      const patterns = [
+        { o1: '+', o2: '+' },
+        { o1: '+', o2: '-' },
+        { o1: '-', o2: '+' },
+        { o1: '-', o2: '-' },
+      ];
+      const { o1, o2 } = patterns[Math.floor(Math.random() * 4)];
+      op1 = o1;
+      op2 = o2;
+
+      if (o1 === '+' && o2 === '+') {
+        a = Math.floor(Math.random() * 48) + 1;
+        b = Math.floor(Math.random() * (48 - a)) + 1;
+        c = Math.floor(Math.random() * (50 - a - b)) + 1;
+        answer = a + b + c;
+      } else if (o1 === '+' && o2 === '-') {
         a = Math.floor(Math.random() * 49) + 1;
-        b = Math.floor(Math.random() * (50 - a)) + 1;
-        answer = a + b;
-      } else {
+        b = Math.floor(Math.random() * (49 - a)) + 1;
+        c = Math.floor(Math.random() * (a + b - 1)) + 1;
+        answer = a + b - c;
+      } else if (o1 === '-' && o2 === '+') {
         a = Math.floor(Math.random() * 49) + 2;
         b = Math.floor(Math.random() * (a - 1)) + 1;
-        answer = a - b;
+        c = Math.floor(Math.random() * (50 - a + b)) + 1;
+        answer = a - b + c;
+      } else {
+        a = Math.floor(Math.random() * 48) + 3;
+        b = Math.floor(Math.random() * (a - 2)) + 1;
+        c = Math.floor(Math.random() * (a - b - 1)) + 1;
+        answer = a - b - c;
       }
-    } while (answer === 0);
+    } else {
+      c = null;
+      op2 = null;
+      const isAdd = Math.random() > 0.5;
+      op1 = isAdd ? '+' : '-';
+      do {
+        if (isAdd) {
+          a = Math.floor(Math.random() * 49) + 1;
+          b = Math.floor(Math.random() * (50 - a)) + 1;
+          answer = a + b;
+        } else {
+          a = Math.floor(Math.random() * 49) + 2;
+          b = Math.floor(Math.random() * (a - 1)) + 1;
+          answer = a - b;
+        }
+      } while (answer === 0);
+    }
+
     let blankPos = 'answer';
     let blankValue = answer;
     if (difficulty === 'hard') {
@@ -28,8 +67,21 @@ function generateQuestions(count, difficulty) {
         blankPos = 'b';
         blankValue = b;
       }
+    } else if (difficulty === 'hell') {
+      const rand = Math.random();
+      if (rand < 1 / 4) {
+        blankPos = 'a';
+        blankValue = a;
+      } else if (rand < 2 / 4) {
+        blankPos = 'b';
+        blankValue = b;
+      } else if (rand < 3 / 4) {
+        blankPos = 'c';
+        blankValue = c;
+      }
     }
-    questions.push({ a, b, op: isAdd ? '+' : '-', answer, blankPos, blankValue });
+
+    questions.push({ a, b, c, op1, op2, answer, blankPos, blankValue });
   }
   return questions;
 }
@@ -38,10 +90,11 @@ const MONSTER_IMG = {
   easy: process.env.PUBLIC_URL + '/images/monster.jpg',
   normal: process.env.PUBLIC_URL + '/images/monster-normal.png',
   hard: process.env.PUBLIC_URL + '/images/monster-hard.png',
+  hell: process.env.PUBLIC_URL + '/images/monster-hell.png',
 };
 
 function Quiz({ difficulty, onComplete }) {
-  const timerSeconds = difficulty === 'easy' ? 30 : difficulty === 'hard' ? 12 : 15;
+  const timerSeconds = difficulty === 'easy' ? 30 : difficulty === 'hard' || difficulty === 'hell' ? 12 : 15;
   const [questions] = useState(() => generateQuestions(10, difficulty));
   const [index, setIndex] = useState(0);
   const [input, setInput] = useState('');
@@ -186,22 +239,24 @@ function Quiz({ difficulty, onComplete }) {
             </div>
 
             <div className="quiz-question">
-              {q.blankPos === 'a' ? (
-                <span className="quiz-answer-box">?</span>
+              {q.c != null ? (
+                <>
+                  {q.blankPos === 'a' ? <span className="quiz-answer-box">?</span> : <span className="quiz-num">{q.a}</span>}
+                  <span className="quiz-op">{q.op1}</span>
+                  {q.blankPos === 'b' ? <span className="quiz-answer-box">?</span> : <span className="quiz-num">{q.b}</span>}
+                  <span className="quiz-op">{q.op2}</span>
+                  {q.blankPos === 'c' ? <span className="quiz-answer-box">?</span> : <span className="quiz-num">{q.c}</span>}
+                  <span className="quiz-eq">=</span>
+                  {q.blankPos === 'answer' ? <span className="quiz-answer-box">?</span> : <span className="quiz-num">{q.answer}</span>}
+                </>
               ) : (
-                <span className="quiz-num">{q.a}</span>
-              )}
-              <span className="quiz-op">{q.op}</span>
-              {q.blankPos === 'b' ? (
-                <span className="quiz-answer-box">?</span>
-              ) : (
-                <span className="quiz-num">{q.b}</span>
-              )}
-              <span className="quiz-eq">=</span>
-              {q.blankPos === 'answer' ? (
-                <span className="quiz-answer-box">?</span>
-              ) : (
-                <span className="quiz-num">{q.answer}</span>
+                <>
+                  {q.blankPos === 'a' ? <span className="quiz-answer-box">?</span> : <span className="quiz-num">{q.a}</span>}
+                  <span className="quiz-op">{q.op1}</span>
+                  {q.blankPos === 'b' ? <span className="quiz-answer-box">?</span> : <span className="quiz-num">{q.b}</span>}
+                  <span className="quiz-eq">=</span>
+                  {q.blankPos === 'answer' ? <span className="quiz-answer-box">?</span> : <span className="quiz-num">{q.answer}</span>}
+                </>
               )}
             </div>
 

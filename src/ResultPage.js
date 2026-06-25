@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-const MODE_LABEL = { easy: '简单', normal: '普通', hard: '困难' };
-const MODE_EMOJI = { easy: '🌱', normal: '⚡', hard: '🔥' };
+const MODE_LABEL = { easy: '简单', normal: '普通', hard: '困难', hell: '地狱' };
+const MODE_EMOJI = { easy: '🌱', normal: '⚡', hard: '🔥', hell: '💀' };
 
 function ResultPage({ result, difficulty, onRestart }) {
   useEffect(() => {
