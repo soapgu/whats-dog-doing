@@ -23,12 +23,16 @@ function App() {
     setPage('cover');
   };
 
+  const handleBack = () => {
+    setPage('cover');
+  };
+
   if (page === 'cover') {
     return <CoverPage onStart={handleStart} />;
   }
 
   if (page === 'quiz') {
-    return <Quiz difficulty={difficulty} onComplete={handleComplete} />;
+    return <Quiz difficulty={difficulty} onComplete={handleComplete} onBack={handleBack} />;
   }
 
   return <ResultPage result={result} difficulty={difficulty} onRestart={handleRestart} />;

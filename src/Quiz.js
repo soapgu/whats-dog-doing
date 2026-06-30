@@ -93,7 +93,7 @@ const MONSTER_IMG = {
   hell: process.env.PUBLIC_URL + '/images/monster-hell.png',
 };
 
-function Quiz({ difficulty, onComplete }) {
+function Quiz({ difficulty, onComplete, onBack }) {
   const timerSeconds = difficulty === 'easy' ? 30 : difficulty === 'hard' || difficulty === 'hell' ? 12 : 15;
   const [questions] = useState(() => generateQuestions(10, difficulty));
   const [index, setIndex] = useState(0);
@@ -200,6 +200,7 @@ function Quiz({ difficulty, onComplete }) {
   return (
     <div className="quiz">
       <div className="quiz-bg" />
+      <button className="quiz-back" onClick={onBack}>← 返回</button>
       <div className="quiz-layout">
           <div className="quiz-content">
             <div className="quiz-top-row">
