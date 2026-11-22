@@ -2,6 +2,7 @@
   --v-slot: 42px;
   --v-mark: 14px;
   --v-sign: 24px;
+  --v-gap: 6px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -13,6 +14,15 @@
   display: flex;
   align-items: center;
   padding-top: var(--v-mark);
+}
+
+/* 个位与十位之间留缝。`.v-slot` 也挂在 input 本体上，必须用 > 只取 .v-cells 的直接子；
+   `.v-sign` 恒为第一个子，所以首位数字格不会匹配 `X + Y`，无需归零规则 */
+.v-cells > .v-slot + .v-slot,
+.v-cells > .v-slot + .v-cell,
+.v-cells > .v-cell + .v-slot,
+.v-cells > .v-cell + .v-cell {
+  margin-left: var(--v-gap);
 }
 
 .v-sign {
@@ -67,14 +77,15 @@ input.v-slot.input {
   border: 2px dashed rgba(255, 200, 50, 0.45);
   border-radius: 8px;
   color: #fff;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 input.v-slot.input:focus {
   outline: none;
   border-style: solid;
-  border-color: rgba(255, 200, 50, 0.85);
-  box-shadow: 0 0 10px rgba(255, 200, 50, 0.25);
+  border-color: #ffd200;
+  background: rgba(255, 200, 50, 0.12);
+  box-shadow: 0 0 12px rgba(255, 200, 50, 0.35);
 }
 
 .v-slot.input.filled {
@@ -82,7 +93,8 @@ input.v-slot.input:focus {
   background: rgba(255, 200, 50, 0.07);
 }
 
-.v-row.final .v-slot.input {
+/* 故意只写 .v-slot 不带 .input：让 resting 态停在 (0,3,0)，压不过下面的 :focus/.ok/.wrong */
+.v-row.final .v-slot {
   border-color: rgba(255, 200, 50, 0.7);
 }
 
@@ -96,10 +108,10 @@ input.v-slot.input.wrong {
   color: #f87171;
 }
 
-/* 进位 1 落在十位与个位的交界处、紧贴横线上方 */
+/* 进位 1 落在十位与个位的交界处、紧贴横线上方（+ gap/2 补偿个位格的左移） */
 .v-carry {
   position: absolute;
-  left: 100%;
+  left: calc(100% + var(--v-gap) / 2);
   bottom: 0;
   transform: translateX(-50%);
   font-size: 14px;
@@ -133,6 +145,7 @@ input.v-slot.input.wrong {
     --v-slot: 34px;
     --v-mark: 11px;
     --v-sign: 20px;
+    --v-gap: 4px;
   }
   .v-slot {
     font-size: 26px;
@@ -149,5 +162,6 @@ input.v-slot.input.wrong {
   .v-form {
     --v-slot: 26px;
     --v-mark: 8px;
+    --v-gap: 3px;
   }
 }

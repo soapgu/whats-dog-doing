@@ -21,6 +21,16 @@ function VerticalAnswer({ plan, showMarks, revealed, locked, onSubmit }) {
     if (el) el.focus();
   };
 
+  // col 越大越靠左（col=1 是十位），所以左键是 +1；只在同一行内找邻居
+  const focusCol = (key, delta) => {
+    const row = plan.rows.find((r) => r.slots.some((s) => s.key === key));
+    if (!row) return;
+    const { col } = row.slots.find((s) => s.key === key);
+    const nb = row.slots.find((s) => s.key != null && s.col === col + delta);
+    const el = nb && refs.current[nb.key];
+    if (el) el.focus();
+  };
+
   const handleChange = (key, raw) => {
     if (locked) return;
     const last = raw.slice(-1);
@@ -47,10 +57,10 @@ function VerticalAnswer({ plan, showMarks, revealed, locked, onSubmit }) {
       if (target !== key) focusAt(i - 1);
     } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      focusAt(i + 1);
+      focusCol(key, 1);
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
-      focusAt(i - 1);
+      focusCol(key, -1);
     }
   };
 

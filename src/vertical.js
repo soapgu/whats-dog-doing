@@ -39,8 +39,8 @@ function makeStep(op, top, bottom, result) {
   return { op, top, bottom, result, carry, borrow };
 }
 
-function operand(value, editable) {
-  return { value, editable };
+function operand(value, editable, order) {
+  return { value, editable, order };
 }
 
 // 把一道三数题分解成 1~2 个竖式步骤。乘法只对口算出的积列竖式，
@@ -50,10 +50,10 @@ function decomposeSteps(q) {
   const result = operand(answer, true);
 
   if (op1 === '×') {
-    return [makeStep(op2, operand(a * b, true), operand(c, false), result)];
+    return [makeStep(op2, operand(a * b, true, 'msd'), operand(c, false), result)];
   }
   if (op2 === '×') {
-    return [makeStep(op1, operand(a, false), operand(b * c, true), result)];
+    return [makeStep(op1, operand(a, false), operand(b * c, true, 'msd'), result)];
   }
 
   const s1 = operand(op1 === '+' ? a + b : a - b, true);
@@ -109,8 +109,8 @@ export function buildVerticalPlan(q) {
         slots.push({ col, key, mode: 'input', digit });
       }
     }
-    // 竖式从个位算起，填空顺序也跟着按个位→十位
-    inputKeys.push(...rowKeys.reverse());
+    // 口诀积是从左往右写的，先十位；竖式结果从个位推起，先个位
+    inputKeys.push(...(d.num.order === 'msd' ? rowKeys : rowKeys.slice().reverse()));
     return {
       key: `r${ri}`,
       sign: d.sign,
