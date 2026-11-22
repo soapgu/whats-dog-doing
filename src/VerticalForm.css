@@ -96,11 +96,11 @@ input.v-slot.input.wrong {
   color: #f87171;
 }
 
-/* 进位 1 写在十位与个位的交界处、紧贴下操作数头顶（教科书写法） */
+/* 进位 1 落在十位与个位的交界处、紧贴横线上方 */
 .v-carry {
   position: absolute;
   left: 100%;
-  top: 0;
+  bottom: 0;
   transform: translateX(-50%);
   font-size: 14px;
   font-weight: 700;
