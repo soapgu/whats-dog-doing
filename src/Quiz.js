@@ -1,9 +1,104 @@
 import { useState, useRef, useEffect } from 'react';
 import './Quiz.css';
 
+const randIn = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
+
+// 三数混合运算：乘法因数在九九表内，每步中间结果与答案都落在 1-100
+function generateMixedQuestion() {
+  const forms = ['mulAdd', 'mulSub', 'addMul', 'subMul', 'addAdd', 'addSub', 'subAdd', 'subSub'];
+  const form = forms[Math.floor(Math.random() * forms.length)];
+  let a, b, c, op1, op2, answer;
+
+  switch (form) {
+    case 'mulAdd': {
+      a = randIn(2, 9);
+      b = randIn(2, 9);
+      const m = a * b;
+      c = randIn(1, Math.min(20, 99 - m));
+      op1 = '×';
+      op2 = '+';
+      answer = m + c;
+      break;
+    }
+    case 'mulSub': {
+      a = randIn(2, 9);
+      b = randIn(2, 9);
+      const m = a * b;
+      c = randIn(1, m - 1);
+      op1 = '×';
+      op2 = '-';
+      answer = m - c;
+      break;
+    }
+    case 'addMul': {
+      b = randIn(2, 9);
+      c = randIn(2, 9);
+      const m = b * c;
+      a = randIn(1, Math.min(20, 99 - m));
+      op1 = '+';
+      op2 = '×';
+      answer = a + m;
+      break;
+    }
+    case 'subMul': {
+      b = randIn(2, 9);
+      c = randIn(2, 9);
+      const m = b * c;
+      a = randIn(m + 1, Math.min(m + 50, 99));
+      op1 = '-';
+      op2 = '×';
+      answer = a - m;
+      break;
+    }
+    case 'addAdd': {
+      a = randIn(10, 60);
+      b = randIn(5, 94 - a);
+      c = randIn(5, 99 - a - b);
+      op1 = '+';
+      op2 = '+';
+      answer = a + b + c;
+      break;
+    }
+    case 'addSub': {
+      a = randIn(10, 60);
+      b = randIn(5, 99 - a);
+      c = randIn(1, a + b - 1);
+      op1 = '+';
+      op2 = '-';
+      answer = a + b - c;
+      break;
+    }
+    case 'subAdd': {
+      a = randIn(20, 99);
+      b = randIn(5, a - 1);
+      c = randIn(1, 99 - (a - b));
+      op1 = '-';
+      op2 = '+';
+      answer = a - b + c;
+      break;
+    }
+    default: {
+      a = randIn(20, 99);
+      b = randIn(5, a - 2);
+      c = randIn(1, a - b - 1);
+      op1 = '-';
+      op2 = '-';
+      answer = a - b - c;
+    }
+  }
+
+  return { a, b, c, op1, op2, answer };
+}
+
 function generateQuestions(count, difficulty) {
   const questions = [];
   for (let i = 0; i < count; i++) {
+    if (difficulty === 'easy' || difficulty === 'normal') {
+      const mixed = generateMixedQuestion();
+      questions.push({ ...mixed, blankPos: 'answer', blankValue: mixed.answer });
+      continue;
+    }
+
     let a, b, c, op1, op2, answer;
 
     if (difficulty === 'hell') {
