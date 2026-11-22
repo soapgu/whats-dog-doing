@@ -26,17 +26,21 @@
 - **ESLint**：配置在 package.json 中，`extends: ["react-app", "react-app/jest"]`，无独立配置文件
 - **格式化**：无 Prettier 等格式化工具
 - **页面路由**：`App.js` 内部 `page` 变量：`"cover"` → `"quiz"` → `"result"`，通过回调切换
-- **难度**：四种难度 `easy` / `normal` / `hard` / `hell`，通过 `CoverPage` → `App` 传入 `Quiz`
+- **难度**：四种难度 `easy` / `normal` / `hard` / `hell`，通过 `CoverPage` → `App` 传入 `Quiz`。`easy` / `normal` 用竖式逐位填空（`timerSeconds === null` 表示不限时），`hard` / `hell` 用横式输入框
+- **竖式样式隔离**：竖式模式对既有布局的压缩全部写在 `Quiz.css` 的 `.quiz-col` 作用域下，改这里不要动基础规则，否则会回归影响 `hard` / `hell`
 
 ## 项目结构
 
 ```
 src/
-├── index.js          # 入口
-├── App.js            # 根组件（状态机路由）
-├── CoverPage.js      # 首页（难度选择）
-├── Quiz.js           # 核心答题页（出题、计时、动画）
-└── ResultPage.js     # 结算页
+├── index.js            # 入口
+├── App.js              # 根组件（状态机路由）
+├── CoverPage.js        # 首页（难度选择）
+├── Quiz.js             # 核心答题页（出题、计时、动画）
+├── ResultPage.js       # 结算页
+├── vertical.js         # 竖式分解与逐列进位退位计算（纯逻辑，无 import）
+├── VerticalForm.js     # 竖式渲染（行、横线、进位小 1、退位点）
+└── VerticalAnswer.js   # 竖式填空（空格状态、分格输入与焦点推进、自动提交）
 ```
 
 `public/sounds/` 音效通过 Audio API 播放，`public/images/` 为游戏素材。

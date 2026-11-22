@@ -1,4 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
+import VerticalAnswer from './VerticalAnswer';
+import { buildVerticalPlan } from './vertical';
 import './Quiz.css';
 
 const randIn = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
@@ -189,7 +191,8 @@ const MONSTER_IMG = {
 };
 
 function Quiz({ difficulty, onComplete, onBack }) {
-  const timerSeconds = difficulty === 'easy' ? 30 : difficulty === 'hard' || difficulty === 'hell' ? 12 : 15;
+  const useVertical = difficulty === 'easy' || difficulty === 'normal';
+  const timerSeconds = difficulty === 'easy' ? null : difficulty === 'normal' ? 30 : 12;
   const [questions] = useState(() => generateQuestions(10, difficulty));
   const [index, setIndex] = useState(0);
   const [input, setInput] = useState('');
@@ -202,6 +205,7 @@ function Quiz({ difficulty, onComplete, onBack }) {
   const inputRef = useRef(null);
 
   const q = questions[index];
+  const plan = useMemo(() => (useVertical ? buildVerticalPlan(q) : null), [q, useVertical]);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -218,7 +222,7 @@ function Quiz({ difficulty, onComplete, onBack }) {
   }, [difficulty]);
 
   useEffect(() => {
-    if (feedback) return;
+    if (!timerSeconds || feedback) return;
     const timer = setInterval(() => {
       setTimeLeft((t) => {
         if (t <= 1) {
@@ -229,10 +233,10 @@ function Quiz({ difficulty, onComplete, onBack }) {
       });
     }, 1000);
     return () => clearInterval(timer);
-  }, [index, feedback]);
+  }, [index, feedback, timerSeconds]);
 
   useEffect(() => {
-    if (timeLeft === 0 && !submittedRef.current) {
+    if (timerSeconds != null && timeLeft === 0 && !submittedRef.current) {
       finishQuestion(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -241,6 +245,7 @@ function Quiz({ difficulty, onComplete, onBack }) {
   useEffect(() => {
     if (feedback) return;
     setMonsterLeft(80);
+    if (!timerSeconds) return;
     const startTime = Date.now();
     const totalMs = timerSeconds * 1000;
     let rafId;
@@ -293,7 +298,7 @@ function Quiz({ difficulty, onComplete, onBack }) {
   };
 
   return (
-    <div className="quiz">
+    <div className={useVertical ? 'quiz quiz-col' : 'quiz'}>
       <div className="quiz-bg" />
       <button className="quiz-back" onClick={onBack}>← 返回</button>
       <div className="quiz-layout">
@@ -310,10 +315,16 @@ function Quiz({ difficulty, onComplete, onBack }) {
                 ))}
               </div>
               <div className="quiz-timer">
-                <span className={`timer-icon ${timeLeft <= 5 ? 'urgent' : ''}`}>⏱</span>
-                <span className={`timer-text ${timeLeft <= 5 ? 'urgent' : timeLeft <= 10 ? 'warn' : ''}`}>
-                  {timeLeft}s
-                </span>
+                {timerSeconds == null ? (
+                  <span className="timer-text unlimited">不限时</span>
+                ) : (
+                  <>
+                    <span className={`timer-icon ${timeLeft <= 5 ? 'urgent' : ''}`}>⏱</span>
+                    <span className={`timer-text ${timeLeft <= 5 ? 'urgent' : timeLeft <= 10 ? 'warn' : ''}`}>
+                      {timeLeft}s
+                    </span>
+                  </>
+                )}
               </div>
             </div>
 
@@ -343,7 +354,12 @@ function Quiz({ difficulty, onComplete, onBack }) {
                   <span className="quiz-op">{q.op2}</span>
                   {q.blankPos === 'c' ? <span className="quiz-answer-box">?</span> : <span className="quiz-num">{q.c}</span>}
                   <span className="quiz-eq">=</span>
-                  {q.blankPos === 'answer' ? <span className="quiz-answer-box">?</span> : <span className="quiz-num">{q.answer}</span>}
+                  {!useVertical &&
+                    (q.blankPos === 'answer' ? (
+                      <span className="quiz-answer-box">?</span>
+                    ) : (
+                      <span className="quiz-num">{q.answer}</span>
+                    ))}
                 </>
               ) : (
                 <>
@@ -356,29 +372,40 @@ function Quiz({ difficulty, onComplete, onBack }) {
               )}
             </div>
 
-            <div className="quiz-input-row">
-              <input
-                ref={inputRef}
-                className="quiz-input"
-                type="number"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                disabled={feedback !== null}
-                placeholder="输入答案"
+            {useVertical ? (
+              <VerticalAnswer
+                plan={plan}
+                showMarks={difficulty === 'easy'}
+                revealed={feedback === 'wrong'}
+                locked={feedback !== null}
+                onSubmit={finishQuestion}
               />
-              <button
-                className="quiz-submit"
-                onClick={handleSubmit}
-                disabled={feedback !== null}
-              >
-                确 认
-              </button>
-            </div>
+            ) : (
+              <div className="quiz-input-row">
+                <input
+                  ref={inputRef}
+                  className="quiz-input"
+                  type="number"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  disabled={feedback !== null}
+                  placeholder="输入答案"
+                />
+                <button
+                  className="quiz-submit"
+                  onClick={handleSubmit}
+                  disabled={feedback !== null}
+                >
+                  确 认
+                </button>
+              </div>
+            )}
 
             <div className={`quiz-feedback-wrap ${!feedback ? 'hidden' : ''}`}>
               <div className={`quiz-feedback ${feedback || ''}`}>
-                {feedback === 'correct' ? '✓ 正确！' : feedback ? `✗ 错误！正确答案是 ${q.blankValue}` : ''}
+                {feedback === 'correct' && '✓ 正确！'}
+                {feedback === 'wrong' && (useVertical ? '✗ 错误！' : `✗ 错误！正确答案是 ${q.blankValue}`)}
               </div>
             </div>
           </div>

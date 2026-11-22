@@ -440,3 +440,96 @@
     font-size: 16px;
   }
 }
+
+/* 竖式模式：横式降级成题面提示，战斗区压扁，给竖式和数字键盘腾出高度 */
+.quiz-col .quiz-top-row {
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.quiz-col .battle-arena {
+  height: 76px;
+  margin-bottom: 12px;
+}
+
+.quiz-col .hero-img {
+  width: 52px;
+  height: 52px;
+}
+
+.quiz-col .monster-img {
+  width: 56px;
+  height: 56px;
+}
+
+.quiz-col .quiz-question {
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.quiz-col .quiz-num {
+  font-size: 44px;
+  min-width: 46px;
+}
+
+.quiz-col .quiz-op,
+.quiz-col .quiz-eq {
+  font-size: 32px;
+}
+
+.quiz-col .quiz-feedback-wrap {
+  height: 28px;
+}
+
+.timer-text.unlimited {
+  font-size: 20px;
+  min-width: 0;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 600px) {
+  .quiz-col .quiz-top-row {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .quiz-col .quiz-progress {
+    gap: 3px;
+  }
+  .quiz-col .quiz-cell {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+    border-radius: 6px;
+  }
+  .quiz-col .battle-arena {
+    width: 260px;
+    height: 60px;
+    margin-bottom: 8px;
+  }
+  .quiz-col .hero-img {
+    width: 38px;
+    height: 38px;
+  }
+  .quiz-col .monster-img {
+    width: 42px;
+    height: 42px;
+  }
+  .quiz-col .quiz-question {
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+  .quiz-col .quiz-num {
+    font-size: 30px;
+    min-width: 32px;
+  }
+  .quiz-col .quiz-op,
+  .quiz-col .quiz-eq {
+    font-size: 22px;
+  }
+  .quiz-col .quiz-feedback-wrap {
+    height: 24px;
+  }
+  .timer-text.unlimited {
+    font-size: 16px;
+  }
+}

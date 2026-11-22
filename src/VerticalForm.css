@@ -1,0 +1,153 @@
+.v-form {
+  --v-slot: 42px;
+  --v-mark: 14px;
+  --v-sign: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: max-content;
+  margin: 0 auto;
+}
+
+.v-cells {
+  display: flex;
+  align-items: center;
+  padding-top: var(--v-mark);
+}
+
+.v-sign {
+  width: var(--v-sign);
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(255, 200, 50, 0.8);
+}
+
+.v-slot {
+  position: relative;
+  box-sizing: border-box;
+  width: var(--v-slot);
+  height: var(--v-slot);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  font-size: 34px;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* 待填格的外层：input 不能带子元素，进位/退位标记挂在这里 */
+.v-cell {
+  position: relative;
+  width: var(--v-slot);
+  height: var(--v-slot);
+  flex-shrink: 0;
+}
+
+.v-slot.blank {
+  /* 缺位仍占宽，保证各位左右对齐；数字本身不显示 */
+  color: transparent;
+}
+
+.v-slot.given {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+input.v-slot.input {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  text-align: center;
+  caret-color: transparent;
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px dashed rgba(255, 200, 50, 0.45);
+  border-radius: 8px;
+  color: #fff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input.v-slot.input:focus {
+  outline: none;
+  border-style: solid;
+  border-color: rgba(255, 200, 50, 0.85);
+  box-shadow: 0 0 10px rgba(255, 200, 50, 0.25);
+}
+
+.v-slot.input.filled {
+  border-style: solid;
+  background: rgba(255, 200, 50, 0.07);
+}
+
+.v-row.final .v-slot.input {
+  border-color: rgba(255, 200, 50, 0.7);
+}
+
+input.v-slot.input.ok {
+  border-color: rgba(74, 222, 128, 0.6);
+  color: #4ade80;
+}
+
+input.v-slot.input.wrong {
+  border-color: rgba(248, 113, 113, 0.8);
+  color: #f87171;
+}
+
+/* 进位 1 写在十位与个位的交界处、紧贴下操作数头顶（教科书写法） */
+.v-carry {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: 14px;
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1;
+  color: #fbbf24;
+}
+
+/* 退位点居中在被借位数字的正上方 */
+.v-dot {
+  position: absolute;
+  left: 50%;
+  top: 2px;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fbbf24;
+}
+
+.v-rule {
+  height: 2px;
+  margin: 3px 2px 1px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 600px) {
+  .v-form {
+    --v-slot: 34px;
+    --v-mark: 11px;
+    --v-sign: 20px;
+  }
+  .v-slot {
+    font-size: 26px;
+  }
+  .v-sign {
+    font-size: 20px;
+  }
+  .v-carry {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 600px) and (max-height: 620px) {
+  .v-form {
+    --v-slot: 26px;
+    --v-mark: 8px;
+  }
+}
